@@ -1,0 +1,22 @@
+name: "CI-test flow"
+
+run-name: "ci-test flow"
+
+on: [push,pull_request]
+
+jobs:
+    build-python:
+        
+        runs-on: ubuntu-latest
+        
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            
+            - name: Set up python
+              uses: actions/setup-python@v4
+              with:
+                python-version: 3.10.13
+            
+            - name: Install dependencies
+              run: pip install --no-cache-dir -r requirements.txt
