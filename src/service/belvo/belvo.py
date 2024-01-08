@@ -27,20 +27,17 @@ class Belvo:
                     'page_size':page_size,
                     'link':self.link,
                 }
-                retrive_response = await self.post_retrieve_transactions()
                 
-                if retrive_response == 201:
                     
-                    response = await client.get(url, headers=self.headers,params=params)
-                    
-                    if response.status_code == 200:
-
-                        return response.json()
-                    
-                    else:
-                        return {"error": f"Failed to fetch data. Status code: {response.status_code}"}
-                    
-                return {"error": f"Failed to fetch data. Status code: {response.status_code}"}
+                response = await client.get(url, headers=self.headers,params=params)
+                
+                if response.status_code == 200:
+                
+                    return response.json()
+                
+                else:
+                    return {"error": f"Failed to fetch data. Status code: {response.status_code}"}
+                
             except httpx.HTTPError as e:
                 return {"error": f"HTTP error occurred: {e}"}
 
@@ -49,21 +46,19 @@ class Belvo:
         async with httpx.AsyncClient() as client:
             try:
                 
-                retrive_accounts = await self.post_retrieve_accounts()
+                url = f"{self.base_url}/api/accounts/"
+                response = await client.get(url, headers=self.headers)
+
+                if response.status_code == 200:
+
+                    return response.json()
                 
-                if retrive_accounts == 201:
+                else:
                     
-                    url = f"{self.base_url}/api/accounts/"
-                    response = await client.get(url, headers=self.headers)
-
-                    if response.status_code == 200:
-
-                        return response.json()
-                    else:
-                        return {"error": f"Failed to fetch data. Status code: {response.status_code}"}
+                    return {"error": f"Failed to fetch data. Status code: {response.status_code}"}
                     
-                return {"error": f"Failed to fetch data. Status code: {response.status_code}"}
             except httpx.HTTPError as e:
+                
                 return {"error": f"HTTP error occurred: {e}"}
     
     async def post_retrieve_transactions(self):
