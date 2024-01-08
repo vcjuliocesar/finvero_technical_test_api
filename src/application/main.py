@@ -1,16 +1,31 @@
 from fastapi import FastAPI,Depends,HTTPException,status
 from fastapi.responses import JSONResponse
+from src.domain.models.institution_entity import InstitutionEntity
+from src.domain.models.account_entity import AccountEntity
+from src.domain.models.balance_entity import BalanceEntity
+from src.domain.models.credit_data_entity import CreditDataEntity
+from src.domain.models.loan_data_entity import LoanDataEntity
+from src.domain.models.merchant_entity import MerchantEntity
+from src.domain.models.transaction_entity import TransactionEntity
 from src.domain.models.base_entity import init
-from src.service.belvo.belvo import Belvo
+from src.infrastructure.service.belvo.belvo import Belvo
 
 app = FastAPI()
 
 async def startup_event():
+    
     instance = Belvo()
+    
     transactions = await instance.post_retrieve_transactions()
+    
     accounts = await instance.post_retrieve_accounts()
-    print("transactions",transactions)
-    print("accounts",accounts)
+    
+    if transactions == 201 and accounts == 201:
+        
+        transaction_list = await instance.get_transactions()
+        
+        account_list = await instance.get_accounts()
+        
 
 async def shutdown_event():
     print("shut down app...")
@@ -45,3 +60,4 @@ async def get_transactions(belvo: Belvo = Depends()):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
     
     
+init()
