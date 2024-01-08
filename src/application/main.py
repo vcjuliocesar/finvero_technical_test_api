@@ -48,10 +48,16 @@ async def get_transactions(belvo: Belvo = Depends()):
 
         transactions = await belvo.get_transactions()
 
-        results = [element for element in transactions['results']
+        transactions['results'] = [element for element in transactions['results']
                    if element.get("category") == "Income & Payments"]
+        
+        transactions['results'] = [
+            {**item, 'account': item['account']['id']} for item in transactions['results']]
 
-        return JSONResponse(status_code=status.HTTP_200_OK, content=results)
+        transactions['results'] = list(map(lambda x: {k: v for k, v in x.items(
+        ) if k not in ('merchant')}, transactions['results']))
+        
+        return JSONResponse(status_code=status.HTTP_200_OK, content=transactions['results'])
 
     except Exception as error:
 
@@ -63,9 +69,15 @@ async def get_transactions(belvo: Belvo = Depends()):
 async def get_accounts(belvo: Belvo = Depends()):
     try:
 
-        accounts = await belvo.get_accounts()
-
-        return JSONResponse(status_code=status.HTTP_200_OK, content=accounts['results'])
+        transactions = await belvo.get_transactions()
+    
+        transactions['results'] = [element['account'] for element in transactions['results']]
+        
+        transactions['results'] = list(map(lambda x: {k: v for k, v in x.items(
+        ) if k not in ('institution','balance','loan_data','credit_data')}, transactions['results']))
+       
+        
+        return JSONResponse(status_code=status.HTTP_200_OK, content=transactions['results'] )
 
     except Exception as error:
 
@@ -85,9 +97,6 @@ async def get_amounts_by_category(belvo: Belvo = Depends()):
         transactions['results'] = list(map(lambda x: {k: v for k, v in x.items(
         ) if k not in ('merchant')}, transactions['results']))
 
-        # transactions['results'] = sorted(
-        #     transactions['results'], key=lambda x: x.get("category", "null") or "null")
-
         transactions['results'] = sorted(transactions['results'], key=lambda x: x.get(
             "amount", 0.0) or 0.0, reverse=True)
 
@@ -95,8 +104,7 @@ async def get_amounts_by_category(belvo: Belvo = Depends()):
         [grouped_data[item["category"].lower().replace(" ", "_") if item["category"] and item["category"].strip(
         ) else item["category"]].append(item) for item in transactions['results']]
 
-        # Convertir el defaultdict a un diccionario estándar
-        #transactions['results'] = dict(grouped_data)
+        
         transactions['results'] = list(dict(category=category, transactions=group) for category, group in grouped_data.items())
         
         return JSONResponse(status_code=status.HTTP_200_OK, content=transactions['results'])
