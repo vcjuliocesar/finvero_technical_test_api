@@ -9,9 +9,9 @@ class Database:
     def __init__(self):
         self.env = get_enviroment_settinngs()
         self.DATABASE_URL = f"{self.env().DATABASE_ENGINE}://{self.env().DATABASE_USER}:{self.env().DATABASE_PASSWORD}@{self.env().DATABASE_HOST}:{self.env().DATABASE_PORT}/{self.env().DATABASE_NAME}"
-        self.Engine = create_engine(self.DATABASE_URL, echo=True)
+        self.engine = create_engine(self.DATABASE_URL, echo=True)
         self.SessionLocal = sessionmaker(
-            autocommit=False, autoflush=False, bind=self.Engine)
+            autocommit=False, autoflush=False, bind=self.engine)
         self.Base = declarative_base()
 
     def get_base(self):
@@ -20,7 +20,7 @@ class Database:
 
     def get_engine(self):
 
-        return self.Engine
+        return self.engine
 
     def get_session(self):
         

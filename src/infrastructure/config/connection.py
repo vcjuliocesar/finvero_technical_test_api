@@ -9,14 +9,14 @@ def get_settings():
 
 def get_db():
     
-    instance = get_settings()
+    selected_db = get_settings()
     
-    db = instance.get_session()
+    db_session = selected_db.get_session()
 
     try:
 
-        yield db
+        yield db_session
 
     finally:
 
-        db.close()
+        db_session.close()
