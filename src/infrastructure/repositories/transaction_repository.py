@@ -22,6 +22,11 @@ class TransactionRepository(RepositoryInterface):
         
         return self.db.query(TransactionEntity).filter_by(**criteria).first()
     
+    
+    def get(self):
+    
+        return self.db.query(TransactionEntity).all()
+    
     def delete(self, transaction:TransactionEntity) -> None:
         
         self.db.delete(transaction)

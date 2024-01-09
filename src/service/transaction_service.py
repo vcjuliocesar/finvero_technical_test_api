@@ -11,7 +11,7 @@ class TransactionService:
 
         self.repository = repository
 
-    def create(self, transaction: CreateTransactionDto) -> TransactionEntity:
+    def create(self, transaction) -> TransactionEntity:
 
         return self.repository.create(TransactionEntity(**transaction.model_dump()))
 
@@ -30,6 +30,10 @@ class TransactionService:
 
         return self.repository.find_by(criteria)
 
+    def get(self):
+        
+        return self.repository.get()
+    
     def delete(self, transaction: transaction_schema) -> None:
 
         return self.repository.delete(transaction)

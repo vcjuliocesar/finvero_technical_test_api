@@ -8,5 +8,3 @@ class AccountSchema(BaseAccount):
     class Config:
             
         from_attributes = True
-        
-        allow_mutation = False

@@ -27,3 +27,13 @@ class AccountRepository(RepositoryInterface):
         self.db.delete(account)
         
         self.db.commit()
+        
+    def get(self):
+    
+        return self.db.query(AccountEntity).all()
+    
+    def delete(self, account:AccountEntity) -> None:
+        
+        self.db.delete(account)
+        
+        self.db.commit()

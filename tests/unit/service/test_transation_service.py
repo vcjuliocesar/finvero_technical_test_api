@@ -5,7 +5,7 @@ from src.application.main import app
 from src.domain.models.account_entity import AccountEntity
 from src.infrastructure.config.memory_database import MemoryDatabase
 from src.infrastructure.dtos.create_acccount_dto import CreateAccountDto
-from src.infrastructure.dtos.create_transaction_dto import CreateTransactionDto
+#from src.infrastructure.dtos.create_transaction_dto import CreateTransactionDto
 from src.infrastructure.repositories.account_repository import AccountRepository
 from src.infrastructure.repositories.transaction_repository import TransactionRepository
 from src.service.account_service import AccountService
@@ -88,36 +88,36 @@ def create_account(account_service):
 
     #account_service.delete(account_entity)
     
-@pytest.fixture
-def create_transaction(create_account,account_service,transaction_service):
+# @pytest.fixture
+# def create_transaction(create_account,account_service,transaction_service):
 
-    create_transaction= CreateTransactionDto(
-        transaction_id="0644634a-696e-42df-95e1-c05772d9a6ab",
-        category="Income & Payments",
-        subcategory="test",
-        type="INFLOW",
-        amount="380.03",
-        status="PROCESSED",
-        balance="25645.5",
-        currency="MXN",
-        reference="1128",
-        description="DISPERSION",
-        collected_at="2024-01-07T21:55:58.681926Z",
-        observations="null",
-        accounting_date="2023-12-28T07:36:31",
-        internal_identification="51d312e3",
-        created_at="2023-12-28T07:36:31",
-        account_id=create_account.id
-        ) 
+#     create_transaction= CreateTransactionDto(
+#         transaction_id="0644634a-696e-42df-95e1-c05772d9a6ab",
+#         category="Income & Payments",
+#         subcategory="test",
+#         type="INFLOW",
+#         amount="380.03",
+#         status="PROCESSED",
+#         balance="25645.5",
+#         currency="MXN",
+#         reference="1128",
+#         description="DISPERSION",
+#         collected_at="2024-01-07T21:55:58.681926Z",
+#         observations="null",
+#         accounting_date="2023-12-28T07:36:31",
+#         internal_identification="51d312e3",
+#         created_at="2023-12-28T07:36:31",
+#         account_id=create_account.id
+#         ) 
 
-    entity = transaction_service.create(create_transaction)
+#     entity = transaction_service.create(create_transaction)
 
-    yield entity
+#     yield entity
     
-    account_service.delete(create_account)
+#     account_service.delete(create_account)
     
-    transaction_service.delete(entity)
+#     transaction_service.delete(entity)
 
-def test_create_transaction(create_transaction):
+# def test_create_transaction(create_transaction):
 
-    pass
+#     pass

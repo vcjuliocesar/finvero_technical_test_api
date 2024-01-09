@@ -37,6 +37,10 @@ class AccountService:
     def find_by(self, criteria: dict) -> AccountEntity:
 
         return self.repository.find_by(criteria)
+    
+    def get(self):
+        
+        return self.repository.get()
 
     def delete(self, account: AccountSchema) -> None:
 

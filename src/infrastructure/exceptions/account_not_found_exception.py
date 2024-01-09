@@ -1,6 +1,6 @@
 class AccountNotFoundException(Exception):
     
-    def __init__(self, message:str = "Account nor exists") -> None:
+    def __init__(self, message:str = "Account no exists") -> None:
         
         self.message = message
         
