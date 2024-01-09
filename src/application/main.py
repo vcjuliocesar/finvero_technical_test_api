@@ -1,15 +1,9 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
-from src.domain.models.institution_entity import InstitutionEntity
 from src.domain.models.account_entity import AccountEntity
-from src.domain.models.balance_entity import BalanceEntity
-from src.domain.models.credit_data_entity import CreditDataEntity
-from src.domain.models.loan_data_entity import LoanDataEntity
-from src.domain.models.merchant_entity import MerchantEntity
 from src.domain.models.transaction_entity import TransactionEntity
 from src.domain.models.base_entity import init
 from src.infrastructure.service.belvo.belvo import Belvo
-from src.presentation.data.data import insert_account_data, insert_transactions_data
 from collections import defaultdict
 from functools import reduce
 
@@ -17,8 +11,8 @@ app = FastAPI()
 
 
 async def startup_event():
-
-    instance = Belvo()
+    pass
+    #instance = Belvo()
 
     # transactions = await instance.post_retrieve_transactions()
 
@@ -180,4 +174,4 @@ async def get_balance(belvo: Belvo = Depends()):
 
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(error))
-# init()
+init()

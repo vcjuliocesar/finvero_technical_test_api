@@ -1,4 +1,4 @@
-from sqlalchemy import Column,Integer,String,Boolean,Double,DateTime
+from sqlalchemy import Column,Integer,String,Boolean,Double,DateTime,ForeignKey
 from sqlalchemy.orm import relationship
 from src.domain.models.base_entity import BaseEntity
 
@@ -16,7 +16,7 @@ class TransactionEntity(BaseEntity):
     
     type = Column(String(255))
     
-    amount = Column(Boolean)
+    amount = Column(Double)
     
     status = Column(String(255))
     
@@ -30,7 +30,7 @@ class TransactionEntity(BaseEntity):
     
     collected_at = Column(DateTime)
     
-    observations = Column(String(255))
+    observations = Column(String(255),nullable=True,default=None)
     
     accounting_date = Column(DateTime)
     
@@ -38,10 +38,8 @@ class TransactionEntity(BaseEntity):
     
     created_at = Column(DateTime)
     
-    collected_at = Column(DateTime)
-    
-    merchant_id = Column(Integer)
-    
-    account_id = Column(Integer)
+    account_id = Column(Integer,ForeignKey('account.id'),nullable=True,default=None)
     
     account = relationship("AccountEntity",back_populates="transaction")
+    
+    

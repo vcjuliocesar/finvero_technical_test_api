@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy.orm import relationship
-from sqlalchemy import Integer,String,DateTime,Column,ForeignKey
+from sqlalchemy import Integer,String,DateTime,Column
 from src.domain.models.base_entity import BaseEntity
 
 
@@ -38,27 +38,9 @@ class AccountEntity(BaseEntity):
     
     bank_product_id = Column(String(255))
     
-    balance_id = Column(Integer,ForeignKey('balance.id'))
-    
-    credit_data_id = Column(Integer,ForeignKey('credit_data.id'),nullable=True,default=None)
-    
-    loan_data_id = Column(Integer,ForeignKey('loan_data.id'),nullable=True,default=None)
-    
-    institution_id = Column(Integer,ForeignKey('institution.id'),nullable=True,default=None)
-    
-    transaction_id = Column(Integer,ForeignKey('transaction.id'),nullable=True,default=None)
-    
     created_at = Column(DateTime,default=datetime.now())
     
     collected_at = Column(DateTime,default=datetime.now())
-    
-    balance = relationship('BalanceEntity',back_populates='account')
-    
-    credit_data = relationship('CreditDataEntity',back_populates='account')
-    
-    loan_data = relationship('LoanDataEntity',back_populates='account')
-    
-    institution = relationship('InstitutionEntity',back_populates='account')
     
     transaction = relationship('TransactionEntity',back_populates='account')
     
