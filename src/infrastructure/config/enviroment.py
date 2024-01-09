@@ -22,6 +22,8 @@ class EnviromentSettings(BaseSettings):
     SECRETPASSWORD:str
     LINKID:str
     BASE_URL:str
+    MY_SECRET_KEY:str
+    TOKEN_EXPIRE_MINUTES:int
     
     class Config:
         env_file:str = get_env_file()

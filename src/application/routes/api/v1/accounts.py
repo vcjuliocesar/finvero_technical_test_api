@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
+from src.infrastructure.middlewares.jwt_bearer import JWTBearer
 from src.infrastructure.service.belvo.belvo import Belvo
 
 
 account_router = APIRouter(prefix="/api/v1",tags=["Accounts"])
 
-@account_router.get("/accounts", status_code=status.HTTP_200_OK)
+@account_router.get("/accounts", status_code=status.HTTP_200_OK,dependencies=[Depends(JWTBearer())])
 async def get_accounts(belvo: Belvo = Depends()):
     try:
 

@@ -4,11 +4,12 @@ from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 from src.infrastructure.exceptions.account_not_found_exception import AccountNotFoundException
 from src.infrastructure.exceptions.invalid_account_id_exception import InvalidAccountIdException
+from src.infrastructure.middlewares.jwt_bearer import JWTBearer
 from src.infrastructure.service.belvo.belvo import Belvo
 
 balance_router = APIRouter(prefix="/api/v1",tags=["Balance"])
 
-@balance_router.get("/balance", status_code=status.HTTP_200_OK)
+@balance_router.get("/balance", status_code=status.HTTP_200_OK,dependencies=[Depends(JWTBearer())])
 async def get_balance(account_id:str,belvo: Belvo = Depends()):
     try:
         #user_id ="9cf598dc-3b6c-43e6-9c72-94b305d7837c"
