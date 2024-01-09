@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from src.infrastructure.middlewares.jwt_bearer import JWTBearer
 from src.infrastructure.service.belvo.belvo import Belvo
 from collections import defaultdict
 
 amounts_by_category_router = APIRouter(prefix="/api/v1",tags=["Amounts"])
 
-@amounts_by_category_router.get("/amounts_by_category", status_code=status.HTTP_200_OK)
+@amounts_by_category_router.get("/amounts_by_category", status_code=status.HTTP_200_OK,dependencies=[Depends(JWTBearer())])
 async def get_amounts_by_category(belvo: Belvo = Depends()):
     try:
 

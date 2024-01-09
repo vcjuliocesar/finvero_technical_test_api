@@ -13,6 +13,7 @@ from src.application.routes.api.v1.accounts import account_router
 from src.application.routes.api.v1.amounts_by_category import amounts_by_category_router
 from src.application.routes.api.v1.income_and_expense_analysis import income_and_expense_analysis_router
 from src.application.routes.api.v1.balance import balance_router
+from src.application.routes.api.v1.auth import auth_router
 
 app = FastAPI()
 
@@ -43,6 +44,7 @@ app.add_event_handler("startup", startup_event)
 app.add_event_handler("shutdown", shutdown_event)
 
 
+app.include_router(auth_router)
 
 app.include_router(transaction_router)
 
@@ -53,6 +55,7 @@ app.include_router(amounts_by_category_router)
 app.include_router(income_and_expense_analysis_router)
 
 app.include_router(balance_router)
+
 
 
 

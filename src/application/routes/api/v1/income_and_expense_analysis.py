@@ -3,11 +3,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder 
 from src.infrastructure.exceptions.invalid_account_id_exception import InvalidAccountIdException
+from src.infrastructure.middlewares.jwt_bearer import JWTBearer
 from src.infrastructure.service.belvo.belvo import Belvo
 
 income_and_expense_analysis_router = APIRouter(prefix="/api/v1",tags=["Analysis"])
 
-@income_and_expense_analysis_router.get("/income_and_expense_analysis", status_code=status.HTTP_200_OK)
+@income_and_expense_analysis_router.get("/income_and_expense_analysis", status_code=status.HTTP_200_OK,dependencies=[Depends(JWTBearer())])
 async def get_income_and_expense_analysis(account_id:str,belvo: Belvo = Depends()):
     try:
         #user_id ="9cf598dc-3b6c-43e6-9c72-94b305d7837c"
