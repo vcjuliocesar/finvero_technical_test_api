@@ -38,7 +38,7 @@ async def get_amounts_by_category(use_case:GetAmountsByCategoryUseCase= Depends(
         
         # transactions['results'] = list(dict(category=category, transactions=group) for category, group in grouped_data.items())
         
-        return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(transactions))
+        return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder({'results':transactions}))
 
     except Exception as error:
 

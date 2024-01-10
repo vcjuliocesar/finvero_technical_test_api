@@ -1,3 +1,4 @@
+import sys
 import pytest
 from datetime import datetime
 from fastapi.testclient import TestClient
@@ -5,8 +6,8 @@ from fastapi import status
 from sqlalchemy import inspect
 from src.application.main import app,startup_event
 from src.domain.models.account_entity import AccountEntity
-from src.domain.models.base_entity import BaseEntity
 from src.domain.models.transaction_entity import TransactionEntity
+from src.domain.models.base_entity import BaseEntity
 from src.infrastructure.config.memory_database import MemoryDatabase
 
 
@@ -22,7 +23,7 @@ def cleanup():
     yield
     
     BaseEntity.metadata.drop_all(bind=engine)
-    
+
 
 @pytest.fixture
 def memory_db():
@@ -42,21 +43,8 @@ def memory_db():
 def client() -> TestClient:
 
     return TestClient(app)
-
-   
     
-
-@pytest.fixture()
-def set_up(client: TestClient) -> None:
-
-    response = client.post(
-        "/api/v1/login", json={"email": "jhon.doe@example.com", "password": "MySecretPassword_123"})
-
-    header = {"Authorization": f"Bearer {response.json()}"}
     
-    yield header
-
-
 @pytest.fixture()
 def account(memory_db):
     account_entity = AccountEntity(
@@ -112,30 +100,44 @@ def transaction(memory_db,account):
     yield transaction
     #memory_db.delete(transaction)
     #memory_db.commit()
+
+@pytest.fixture()
+def set_up(client: TestClient) -> None:
     
-def test_unauthorized_get_accounts(client:TestClient):
+    response = client.post(
+        "/api/v1/login", json={"email": "jhon.doe@example.com", "password": "MySecretPassword_123"})
+
+    header = {"Authorization": f"Bearer {response.json()}"}
+    
+    yield header
+
+        
+def test_unauthorized_get_income_and_expense_analysis(client:TestClient):
     
     header = {'Authorization': "Bearer {'message': 'Unauthorized'}"}
     
     param = {"account_id":"9cf598dc-3b6c-43e6-9c72-94b305d7837c"}
     
-    response = client.get('/api/v1/accounts',params=param, headers=header)
+    response = client.get('/api/v1/income_and_expense_analysis',params=param, headers=header)
     
     assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
 
-def test_get_accounts(client:TestClient,set_up:set_up,account,transaction):
+def test_get_income_and_expense_analysis(client:TestClient,set_up:set_up,account,transaction):
     
     header = set_up
     
     param = {"account_id":account.account_id}
     
-    response = client.get('/api/v1/accounts',params=param, headers=header)
+    response = client.get('/api/v1/income_and_expense_analysis',params=param, headers=header)
     
     assert response.status_code == status.HTTP_200_OK
     
     assert response.json() is not None
     
-    data = response.json()
     
-    assert data['results'][0]['account_id'] == "9cf598dc-3b6c-43e6-9c72-94b305d7837c"
     
+
+        
+    
+    
+   
