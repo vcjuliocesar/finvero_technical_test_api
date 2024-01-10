@@ -20,10 +20,6 @@ class UserSchema(UserPostRequest):
     
     id:Optional[int] = Field(default=None)
     
-    is_active:bool
-    
-    is_admin:bool
-    
     class Config:
         
         from_attributes = True
