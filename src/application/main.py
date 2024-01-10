@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from src.infrastructure.service.belvo.belvo import Belvo
 from src.domain.models.base_entity import init
 from src.domain.models.account_entity import AccountEntity
-from src.infrastructure.schemas.transaction_schema import TransactionSchema
 from src.domain.models.transaction_entity import TransactionEntity
 from src.presentation.data.extract_data import extract_data_on_startup
 from src.infrastructure.exceptions.http_exception import get_http_exception
