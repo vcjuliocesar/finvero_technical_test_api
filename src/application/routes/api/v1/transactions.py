@@ -24,7 +24,7 @@ async def get_transactions(use_case:PaymentTransactionsUseCase = Depends()):
         # transactions['results'] = list(map(lambda x: {k: v for k, v in x.items(
         # ) if k not in ('merchant')}, transactions['results']))
         
-        return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder(use_case.execute()))
+        return JSONResponse(status_code=status.HTTP_200_OK, content=jsonable_encoder({'results':use_case.execute()}))
 
     except Exception as error:
 
