@@ -31,12 +31,13 @@ class Belvo:
                     
                 response = await client.get(url, headers=self.headers,params=params)
                 
-                if response.status_code == 200:
+                return response
+                # if response.status_code == 200:
                 
-                    return response.json()
+                #     return response.json()
                 
-                else:
-                    return {"error": f"Failed to fetch data. Status code: {response.status_code}"}
+                # else:
+                #     return {"error": f"Failed to fetch data. Status code: {response.status_code}"}
                 
             except httpx.HTTPError as e:
                 return {"error": f"HTTP error occurred: {e}"}
@@ -48,14 +49,14 @@ class Belvo:
                 
                 url = f"{self.base_url}/api/accounts/"
                 response = await client.get(url, headers=self.headers)
+                return response
+                # if response.status_code == 200:
 
-                if response.status_code == 200:
-
-                    return response.json()
+                #     return response.json()
                 
-                else:
+                # else:
                     
-                    return {"error": f"Failed to fetch data. Status code: {response.status_code}"}
+                #     return {"error": f"Failed to fetch data. Status code: {response.status_code}"}
                     
             except httpx.HTTPError as e:
                 

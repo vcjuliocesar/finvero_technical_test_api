@@ -1,3 +1,4 @@
+from fastapi import Depends
 from src.domain.models.account_entity import AccountEntity
 from src.infrastructure.exceptions.invalid_account_id_exception import InvalidAccountIdException
 from src.infrastructure.repositories.account_repository import AccountRepository
@@ -8,7 +9,7 @@ from src.infrastructure.exceptions.account_not_found_exception import AccountNot
 
 class AccountService:
 
-    def __init__(self, repository: AccountRepository) -> None:
+    def __init__(self, repository: AccountRepository = Depends()) -> None:
 
         self.repository = repository
 

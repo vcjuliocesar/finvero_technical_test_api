@@ -1,9 +1,10 @@
 from fastapi import Depends
 from src.service.transaction_service import TransactionService
 
-class GetTransactionsUseCase:
+class GetAmountsByCategoryUseCase:
     
     def __init__(self,transaction_service:TransactionService = Depends()) -> None:
+        
         self.transaction_service = transaction_service
         
         
