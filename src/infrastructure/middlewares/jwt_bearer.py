@@ -2,16 +2,18 @@ from fastapi import HTTPException,status,Depends
 from fastapi.security import HTTPBearer
 from starlette.requests import Request
 from datetime import datetime
+from src.infrastructure.exceptions.http_exception import get_http_exception
 from src.infrastructure.exceptions.invalid_credentials_exception import InvalidCredentialsException
 #from src.infrastructure.exceptions.utils import get_http_exception
 from src.infrastructure.utils.jwt_utils import validate_token
-#from src.services.user_service import UserService
+from src.service.user_service import UserService
 
 
 class JWTBearer(HTTPBearer) :
     
-    async def __call__(self, request: Request):
+    async def __call__(self, request: Request,user_service:UserService = Depends()):
         
+        self.user_service = user_service
         
         try:
             
@@ -21,7 +23,10 @@ class JWTBearer(HTTPBearer) :
             
             expire = datetime.fromtimestamp(credential['exp'])
             
-            if credential['email'] != 'jhon.doe@example.com':
+            user = self.user_service.find_one({"email":credential['email']})
+            
+            
+            if not user:
                 
                 raise InvalidCredentialsException()
             
@@ -29,8 +34,8 @@ class JWTBearer(HTTPBearer) :
                 
                 raise InvalidCredentialsException()
             
-            return 'finvero'
+            return user
     
         except Exception as error:
             
-            raise error
+            raise get_http_exception(error)

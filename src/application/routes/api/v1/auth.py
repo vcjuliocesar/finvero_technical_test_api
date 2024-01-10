@@ -1,5 +1,6 @@
 from fastapi import HTTPException,APIRouter,status,Depends
 from fastapi.responses import JSONResponse
+from src.application.usecases.find_by_email_user_use_case import FindByEmailUserUseCase
 from src.infrastructure.schemas.user_schema import UserAuthRequest
 from src.infrastructure.exceptions.user_not_found_exception import UserNotFoundException
 from src.infrastructure.utils.jwt_utils import create_token
@@ -8,16 +9,15 @@ from src.infrastructure.utils.password_utils import PasswordUtils
 auth_router = APIRouter(prefix="/api/v1",tags=["Auth"])
 
 @auth_router.post('/login',status_code=status.HTTP_200_OK)
-async def login(user:UserAuthRequest):
+async def login(user:UserAuthRequest,user_case:FindByEmailUserUseCase = Depends()):
     
     utils = PasswordUtils()
     
     try:
         
-        token = "holi"
+        auth = user_case.execute(user)
         
-        #print(utils.hash_password(user.password))
-        if not utils.verify_password(user.password,"$2b$12$SGEEfM5GzcJFlD0LmeJIm.4k5iBlzbl9jH40v9H69djFmBsCTTFEu"):
+        if not (auth and utils.verify_password(user.password,auth.password)):
             
             return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED,content={"message":"Unauthorized"})    
         
