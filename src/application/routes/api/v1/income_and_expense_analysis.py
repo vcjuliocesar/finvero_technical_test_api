@@ -44,7 +44,7 @@ async def get_income_and_expense_analysis(account_id:str,use_case: IncomeExpense
         
         resutl = 'good financial health'
         
-        if health <= 0 :
+        if health is None or health <= 0 :
             
             resutl = 'financial distress'
         
