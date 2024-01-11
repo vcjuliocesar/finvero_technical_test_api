@@ -8,7 +8,19 @@ jobs:
     build-python:
         
         runs-on: ubuntu-latest
-        
+        env:
+          SECRETID: ${{secrets.FINVERO_TEST_SECRETID}}
+          SECRETPASSWORD: ${{secrets.FINVERO_TEST_SECRETPASSWORD}}
+          LINKID: ${{vars.FINVERO_TEST_LINKID}}
+          BASE_URL: ${{vars.FINVERO_TEST_BASE_URL}}
+          DATABASE_ENGINE: ${{vars.FIBVERO_TEST_DATABASE_ENGINE}}
+          DATABASE_NAME: ${{vars.FINVERO_TEST_DATABASE_NAME}}
+          DATABASE_USER: ${{secrets.FINVERO_TEST_DATABASE_USER}}
+          DATABASE_PASSWORD: ${{secrets.FINVERO_TEST_DATABASE_PASSWORD}}
+          DATABASE_HOST: ${{vars.FINVERO_TEST_DATABASE_HOST}}
+          DATABASE_PORT: ${{vars.FINVERO_TEST_DATABASE_PORT}}
+          MY_SECRET_KEY: ${{secrets.FINVERO_TEST_SECRETPASSWORD}}
+          TOKEN_EXPIRE_MINUTES: ${{vars.FINVERO_TEST_TOKEN_EXPIRE_MINUTES}}
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -20,3 +32,6 @@ jobs:
             
             - name: Install dependencies
               run: pip install --no-cache-dir -r requirements.txt
+
+            - name: Run test
+              run: pytest tests
